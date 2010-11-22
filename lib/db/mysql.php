@@ -34,14 +34,22 @@ class db_mysql
 	* 参数:$sql (sql语句)
 	* 返回:二唯数组或false
 	*/
-	public function query(string $sql)
+	public function query ($sql = '')
 	{
+		if (!$sql) {
+			throw new Exception('query for no sql');
+		}
 		if(!$this->is_connected()){
 			throw new Exception('mysql not connected');
 		}
 		$query = mysql_query($sql,$this->connect);
+		
+		if (mysql_errno()) {
+			throw new Exception(mysql_error());
+		}
 		if ($query) {
 			$id = 0;
+			$result = array();
 			while($row = mysql_fetch_assoc($query)){
 					$result[$id] = $row;
 					$id++;
@@ -57,12 +65,20 @@ class db_mysql
 	* @param	$sql (sql语句)
 	* @return	true or false
 	*/
-	public function execute($sql)
+	public function execute($sql = '')
 	{
-		if(!$this->is_connected()){
+		if (!$sql) {
+			throw new Exception('query for no sql');
+		}
+		if(!$this->is_connected()) {
 			throw new Exception('mysql not connected');
 		}
-		return mysql_query($sql,$this->connect);
+		mysql_query($sql,$this->connect);
+		if (mysql_errno()) {
+			throw new Exception(mysql_error());
+		}
+		return true;
+		
 	}
 function __toString()
 {
