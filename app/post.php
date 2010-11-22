@@ -7,16 +7,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$id = strip_tags($_POST['id']);
 	$action = strip_tags($_POST['action']);
 
-	$note = new DB;
-	$note->con();
+	$note = new db_mysql;
 	if($action == 'update'){
 	$sql = "UPDATE `note`.`notes` SET `title` =  '$title',`content` = '$content' WHERE `notes`.`id` =$id";
-		if( $note->update($sql) ){
+		if( $note->execute($sql) ){
 			echo '提交成功';
 		};
 	}else{
 	$sql = "INSERT INTO `note`.`notes` (`id`,`title`, `content`, `time`) VALUES ( '$id','$title', '$content', NOW());";
-		if( $note->insert($sql) ){
+		if( $note->execute($sql) ){
 			echo '提交成功';
 		};
 	}

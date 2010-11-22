@@ -21,10 +21,8 @@ $smarty->compile_dir = DOC_ROOT.'/data/templates_c';
 $smarty->cache_dir = DOC_ROOT.'/data/cache';
 $smarty->config_dir = DOC_ROOT.'/data/config';
 
-
 /**
 * 数据库基本设置
-*
 **/
 define('DB_HOST','localhost');  //数据库定位
 define('DB_USER','root');       //数据库登录名
@@ -34,37 +32,35 @@ define('DB_NAME','note');       //数据库名称
 
 spl_autoload_register(null, false);
 spl_autoload_extensions(".php,inc.php"); // comma-separated list
-spl_autoload_register();
+spl_autoload_register('classLoader');
 
-	/*** class Loader ***/
-    function classLoader($class)
-    {
-        $filename = strtolower($class) . '.php';
-        $file =DOC_ROOT.'/lib/' . $filename;
-        if (!file_exists($file))
-        {
-            return false;
-        }
-        //dbx($file);	//TODO:	debug file path
-        include $file;
-    }
+/*** class Loader ***/
+function classLoader($class) {
+	try {
+	    $path = str_replace('_','/',strtolower($class));
+		$file = DOC_ROOT.'/lib/' . $path.'.php';
+		if (!file_exists($file)){
+	        throw new Exception('cant find '.$file);
+		}
+		include $file;
+	} catch (Exception $e) {
+		dbx($e->getMessage());
+	}
+}
 
-    /*** register the loader functions ***/
-    spl_autoload_register('classLoader');
-
-function dbx($var){
+function dbx($var) {
 	echo '<pre>';
 	print_r($var);
 	echo '</pre>';
 }
 
-function dpx($var){
+function dpx($var) {
     echo '<pre>';
     var_dump($var);
     echo '</pre>';
 }
 
-function dbt($var){
+function dbt($var) {
     echo "<textarea cols=20 rows=6>";
     print_r($var);
     echo "</textarea>";
