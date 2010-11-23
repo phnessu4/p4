@@ -1,5 +1,5 @@
 <?php
-require_once('../data/config.inc.php');
+require_once('../config.inc.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$title   = strip_tags($_POST['title']);
@@ -15,10 +15,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	try {
 		$db = new db_mysql;
 		$db->execute($sql);
-		echo '提交成功';		
+		echo '提交成功';
 	} catch (Exception $e) {
 		echo $e->getMessage();
-	}	
-	
+	}
+
 }
 ?>

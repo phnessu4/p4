@@ -3,26 +3,38 @@
 * 路径设置
 *
 **/
-$url    ='http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
-$doc_root =$_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']);
-
+$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
+//$doc_root = $_SERVER["DOCUMENT_ROOT"].dirname($_SERVER['PHP_SELF']);
 define('URL',$url);
-define('DOC_ROOT','/opt/projects/p4');
+
+
+define('DS',DIRECTORY_SEPARATOR);
 define('DB_HOST','localhost');  //数据库定位
 define('DB_USER','root');       //数据库登录名
 define('DB_PASS','ubuntu');     //数据库密码
 define('DB_NAME','note');       //数据库名称
 //define(DB_ENCODE,'UTF8');     //sql数据编码
 
+//核心库目录
+if (function_exists('realpath') AND @realpath(dirname(__FILE__)) !== FALSE)
+{
+	define('DOC_ROOT',realpath(dirname(__FILE__)));
+	define('LIB_ROOT',DOC_ROOT . DS . 'lib');
+	//echo DOC_ROOT;
+}
+
 spl_autoload_register(null, false);
 spl_autoload_extensions(".php,inc.php"); // comma-separated list
 spl_autoload_register('classLoader');
 
-/*** class Loader ***/
+/**
+ * 路由
+ */
 function classLoader($class) {
 	try {
-	    $path = str_replace('_','/',strtolower($class));
-		$file = DOC_ROOT.'/lib/' . $path.'.php';
+		//类路径
+		$path = str_replace('_',DS,strtolower($class));
+		$file = LIB_ROOT . DS . $path . '.php';
 		if (!file_exists($file)){
 	        throw new Exception('cant find '.$file);
 		}
