@@ -3,7 +3,7 @@
 * SMARTY模板设置
 *
 **/
-require_once(DOC_ROOT.'/ext/Smarty/Smarty.class.php');
+require_once(EXT_ROOT.DS.'Smarty'.DS.'Smarty.class.php');
 
 class view_smarty extends Smarty{
 	public $debug = false;
@@ -12,10 +12,10 @@ class view_smarty extends Smarty{
 	 *
 	 */
 	public function __construct() {
-		$this->template_dir = DOC_ROOT.'/data/templates';      //模板文件
-		$this->compile_dir = DOC_ROOT.'/data/templates_c';
-		$this->cache_dir = DOC_ROOT.'/data/cache';
-		$this->config_dir = DOC_ROOT.'/data/config';
+		$this->template_dir = TPL_ROOT;
+		$this->compile_dir = TPL_C_ROOT;
+		$this->cache_dir = CACHE_ROOT;
+		$this->config_dir = TPL_CFG_ROOT;
 	}
 	/**
 	 *
