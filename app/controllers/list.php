@@ -1,6 +1,5 @@
 <?php
-require_once('../lib/config.inc.php');
-
+$view = new view_smarty();
 try {
 	$sql = 'SELECT * FROM `notes`';
 	$db = new db_mysql;

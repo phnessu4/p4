@@ -1,4 +1,10 @@
 <?php
+//模板路径
+define('TPL_ROOT',DATA_ROOT . DS .'tpl');
+define('TPL_C_ROOT',DATA_ROOT . DS .'tpl_c');
+define('CACHE_ROOT',DATA_ROOT . DS .'cache');
+define('TPL_CFG_ROOT',DATA_ROOT . DS .'tpl_cfg');
+
 /**
 * SMARTY模板设置
 *
