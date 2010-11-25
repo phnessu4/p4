@@ -1,9 +1,9 @@
 <?php
 //模板路径
-define('TPL_ROOT',DATA_ROOT . DS .'tpl');
-define('TPL_C_ROOT',DATA_ROOT . DS .'tpl_c');
-define('CACHE_ROOT',DATA_ROOT . DS .'cache');
-define('TPL_CFG_ROOT',DATA_ROOT . DS .'tpl_cfg');
+define('TPL_ROOT',APP_ROOT .DS . 'data' . DS .'tpl');
+define('TPL_C_ROOT',APP_ROOT . DS .'tpl_c');
+define('CACHE_ROOT',APP_ROOT . DS .'cache');
+define('TPL_CFG_ROOT',APP_ROOT . DS .'tpl_cfg');
 
 /**
 * SMARTY模板设置
@@ -11,7 +11,7 @@ define('TPL_CFG_ROOT',DATA_ROOT . DS .'tpl_cfg');
 **/
 require_once(EXT_ROOT.DS.'Smarty'.DS.'Smarty.class.php');
 
-class view_smarty extends Smarty{
+class ext_smarty extends Smarty{
 	public $debug = false;
 	public $compile = false;
 	/**
