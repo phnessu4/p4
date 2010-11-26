@@ -1,5 +1,11 @@
 <?php
 require_once 'config.inc.php';
+
+/* 加载原始autoload */
+if(function_exists('__autoload')){
+	spl_autoload_register('__autoload');
+}
+/* 加载loader */
 spl_autoload_extensions(".php"); // comma-separated list
 spl_autoload_register('classLoader');
 
