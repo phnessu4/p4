@@ -15,7 +15,7 @@ class app_controller extends core_controller {
 	 *
 	 */
 	public function do_get(){
-		dbx($_GET);
+		dpx($_GET);
 
 	}
 	/**

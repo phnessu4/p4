@@ -79,7 +79,7 @@ class core_dispatcher {
 
         //dbx($controller,$method,$params);	//TODO:调试参数
 
-    	$this->_params($rules, $params);
+    	$this->_params($params);
 
     	/* 引用controller,动态调用方法 */
 		require_once( APP_ROOT . DS . 'controllers' . DS . $controller . EXT_CLASS);
@@ -109,39 +109,18 @@ class core_dispatcher {
     }
 
     /**
-     * 参数
+     * 将url解析到get参数中
      */
-    private function _params($config, $params) {
-        if (isset($config['params'])) {
-            $keys = split(',', $config['params']);
-
-            for ($i = 0, $l = count($params); $i < $l; $i++) {
-                if (!empty($params[$i])) {
-                    list($type, $name) = split(' ', trim($keys[$i]));
-                    $value = urldecode(trim($params[$i]));
-
-                    if (!$this->_validate_param(trim($type), $value)) {
-                        $this->error_404();
-                    }
-
-                    $_GET[trim($name)] = $value;
-                }
-            }
-        }
-    }
-
-    /**
-     * 验证参数类型
-     */
-    private function _validate_param($type, $value) {
-
-        if ($type == 'mixed') {
-            return true;
-        }
-
-        return $type == 'int' && is_numeric($value)
-        	|| $type == 'string' && is_string($value)
-        	|| $type == 'array' && is_array($value);
+    private function _params($params) {
+    	if (empty($params)) {
+    	}
+    	for ($i = 0; $i < count($params); $i += 2) {
+    		if(isset($params[$i]) && isset($params[$i+1])){
+	    		$name  = urldecode(trim($params[$i]));
+	    		$value = urldecode(trim($params[$i+1]));
+    			$_GET[$name] = $value;
+    		}
+    	}
     }
 
     /**
