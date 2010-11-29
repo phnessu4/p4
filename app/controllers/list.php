@@ -3,6 +3,7 @@
  *
  */
 class app_list extends app_controller{
+
 	/**
 	 *
 	 */

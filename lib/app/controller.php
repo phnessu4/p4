@@ -3,7 +3,7 @@
  * applecation controller
  */
 class app_controller extends core_controller {
-	private $view = null;
+	public $view = null;
 	/**
 	 *
 	 */
@@ -15,12 +15,13 @@ class app_controller extends core_controller {
 	 *
 	 */
 	public function do_get(){
+		dbx($_GET);
 
 	}
 	/**
 	 *
 	 */
 	public function do_post(){
-
+		dbx($_POST);
 	}
 }

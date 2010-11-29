@@ -1,9 +1,9 @@
 <?php
 //模板路径
 define('TPL_ROOT',APP_ROOT .DS . 'data' . DS .'tpl');
-define('TPL_C_ROOT',APP_ROOT . DS .'tpl_c');
-define('CACHE_ROOT',APP_ROOT . DS .'cache');
-define('TPL_CFG_ROOT',APP_ROOT . DS .'tpl_cfg');
+define('TPL_C_ROOT',APP_ROOT .DS . 'data' . DS .'tpl_c');
+define('CACHE_ROOT',APP_ROOT .DS . 'data' . DS .'cache');
+define('TPL_CFG_ROOT',APP_ROOT .DS . 'data' . DS .'tpl_cfg');
 
 /**
 * SMARTY模板设置

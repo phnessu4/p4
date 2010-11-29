@@ -14,6 +14,9 @@ define('EXT_ROOT',ROOT . DS . 'ext');
 define('DATA_ROOT',ROOT . DS . 'data');
 /* 应用app路径(默认) */
 defined('APP_ROOT') or define('APP_ROOT',ROOT . DS . 'app');
+/* 扩展名 */
+define('EXT_CLASS','.php');
+
 /* 定义数据库 */
 define('DB_HOST','localhost');  //数据库定位
 define('DB_USER','root');       //数据库登录名

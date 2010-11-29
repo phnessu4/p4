@@ -1,58 +1,61 @@
 <?php
-define('ROOT_KEY', '/');
-
 /**
  * 核心调度调用
+ * @author	phnessu4	phnessu4@gmail.com
  */
+
+define('ROOT_KEY', '/');
+
 class core_dispatcher {
 	//实例化
 	private static $instance;
 	//app配置列表,访问规则
-	private static $applications;
+	private static $rules;
 	//分发url地址
 	private static $uri;
+	//url转换的请求
+	private static $request;
 
-	public function __construct($inifile = null){
+	public function __construct($inifile = null) {
 	    if (is_null($inifile)) {
-            $inifile = APP_ROOT . DS . 'application.ini';
+            $inifile = APP_ROOT . DS . 'rules.ini';
         }
 
         /* 获取配置文件 */
-        $this->applications = parse_ini_file($inifile, true);
+        $this->rules = parse_ini_file($inifile, true);
     }
 
 	/**
 	 * 实例化
 	 */
-	public function instance (){
-	    if(is_null(self::$instance)){
+	public function instance () {
+	    if(is_null(self::$instance)) {
             self::$instance = new core_dispatcher();
         }
         return self::$instance;
     }
 
     /**
-     * 调度
+     * 处理分发
      */
-    public function dispatcher($uri){
+    public function dispatcher($uri) {
     	$chunks = parse_url($uri);
         $this->uri = $chunks['path'];
 
-        /* 检查是否默认调用 */
-        if ($this->uri == ROOT_KEY && array_key_exists(ROOT_KEY, $this->applications)) {
-            $this->invoke(ROOT_KEY, $this->applications[ROOT_KEY]);
+        /* 处理请求地址 */
+        if ($this->uri == ROOT_KEY) {
+        	$path = ROOT_KEY;
+        } else {
+	        $this->request = split('/',preg_replace('#^/|/$#', '', $this->uri));
+	        $path = $this->request[0];
+        }
+
+    	/* 检查是否默认调用 */
+        if (array_key_exists($path, $this->rules)) {
+            $this->invoke($path, $this->rules[$path]);
             exit;
         }
 
-        /* 根据配置,转化为正则,验证url传参 */
-        foreach ($this->applications as $application => $config) {
-            $regex = "|^/?". str_replace('*', '?.*', $application) . "$|";
-            /* 正则匹配url */
-            if (preg_match($regex, $this->uri)) {
-                $this->invoke($application, $config);
-                exit;
-            }
-        }
         /* 如不匹配,返回404 */
         $this->error_404();
     }
@@ -61,51 +64,72 @@ class core_dispatcher {
     /**
      * 调用
      */
-    private function invoke($application, $config){
+    private function invoke($path, $rules){
+
     	/* 检查默认cotroller是否存在 */
-    	if (empty($config['method'])) {
-    		trigger_error("No controller configured for the application "
-                . $application, E_USER_ERROR);
+    	if (empty($rules['controller'])) {
+    		trigger_error("No controller configured for the rules file "
+                . $path, E_USER_ERROR);
     	}
 
-    	/* 过滤uri,切割 */
-        $request = split('/',preg_replace('#^/|/$#', '', $this->uri));
-        $controller = &array_shift($request);
-        $method = &array_shift($request);
-        $params = &$request;
-        
-        if(empty($method)){
-        	$method = $config['method'];
-        }
-        
-    	$r = $this->_params($config, &$params);
-    	dpx($r);
+    	/* 验request中的值,赋值或根据配置文件初始化值 */
+        $controller = isset($this->request[0]) ? array_shift($this->request) : $rules['controller'];
+        $method 	= isset($this->request[0]) ? array_shift($this->request) : $rules['method'];
+        $params 	= isset($this->request) ? $this->request : null;
 
+        //dbx($controller,$method,$params);	//TODO:调试参数
+
+    	$this->_params($rules, $params);
+
+    	/* 引用controller,动态调用方法 */
+		require_once( APP_ROOT . DS . 'controllers' . DS . $controller . EXT_CLASS);
+        $class = 'app_'.basename($controller);
+        $controller = &new $class();
+
+        /* 校验controller 中 method是否存在 */
+        if(method_exists($controller,$method) == false){
+        	echo "method $method not exists";	//TODO:remove this line
+        	$method = $rules['method'];
+        }
+        $controller->$method();
+
+        if (is_subclass_of($controller, 'app_controller')) {
+            switch ($_SERVER['REQUEST_METHOD']) {
+                case 'GET':
+                    $controller->do_get();
+                    break;
+                case 'POST':
+                    $controller->do_post();
+                    break;
+                default:
+                    trigger_error('Unhandled request method: '.
+                        $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
+            }
+        }
     }
-    
+
     /**
      * 参数
      */
-    function _params($config, &$params) {
+    private function _params($config, $params) {
         if (isset($config['params'])) {
             $keys = split(',', $config['params']);
-            
+
             for ($i = 0, $l = count($params); $i < $l; $i++) {
                 if (!empty($params[$i])) {
                     list($type, $name) = split(' ', trim($keys[$i]));
                     $value = urldecode(trim($params[$i]));
-                    dbx($value);
-                    
+
                     if (!$this->_validate_param(trim($type), $value)) {
                         $this->error_404();
                     }
-                
+
                     $_GET[trim($name)] = $value;
                 }
             }
         }
     }
-    
+
     /**
      * 验证参数类型
      */
