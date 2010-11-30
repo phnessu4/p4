@@ -3,18 +3,17 @@
  * 核心调度调用
  * @author	phnessu4	phnessu4@gmail.com
  */
-
 define('ROOT_KEY', '/');
 
 class core_dispatcher {
 	//实例化
 	private static $instance;
 	//app配置列表,访问规则
-	private static $rules;
+	private $rules;
 	//分发url地址
-	private static $uri;
+	private $uri;
 	//url转换的请求
-	private static $request;
+	private $request;
 
 	public function __construct($inifile = null) {
 	    if (is_null($inifile)) {
@@ -60,7 +59,6 @@ class core_dispatcher {
         $this->error_404();
     }
 
-
     /**
      * 调用
      */
@@ -75,11 +73,8 @@ class core_dispatcher {
     	/* 验request中的值,赋值或根据配置文件初始化值 */
         $controller = isset($this->request[0]) ? array_shift($this->request) : $rules['controller'];
         $method 	= isset($this->request[0]) ? array_shift($this->request) : $rules['method'];
-        $params 	= isset($this->request) ? $this->request : null;
-
+        $param 	= isset($this->request) ? $this->request : null;
         //dbx($controller,$method,$params);	//TODO:调试参数
-
-    	$this->_params($params);
 
     	/* 引用controller,动态调用方法 */
 		require_once( APP_ROOT . DS . 'controllers' . DS . $controller . EXT_CLASS);
@@ -91,36 +86,29 @@ class core_dispatcher {
         	echo "method $method not exists";	//TODO:remove this line
         	$method = $rules['method'];
         }
-        $controller->$method();
 
         if (is_subclass_of($controller, 'app_controller')) {
-            switch ($_SERVER['REQUEST_METHOD']) {
-                case 'GET':
-                    $controller->do_get();
-                    break;
-                case 'POST':
-                    $controller->do_post();
-                    break;
-                default:
-                    trigger_error('Unhandled request method: '.
-                        $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
-            }
+			$controller->param = $this->_param($param);
+        }else{
+			trigger_error('Unhandled request method: '. $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
+
         }
+        $controller->$method();
     }
 
     /**
-     * 将url解析到get参数中
+     * 将url解析,合并到参数中,参数覆盖的优先级 url > post > get
      */
-    private function _params($params) {
-    	if (empty($params)) {
-    	}
-    	for ($i = 0; $i < count($params); $i += 2) {
-    		if(isset($params[$i]) && isset($params[$i+1])){
-	    		$name  = urldecode(trim($params[$i]));
-	    		$value = urldecode(trim($params[$i+1]));
-    			$_GET[$name] = $value;
+    private function _param($param) {
+    	$result = array_merge($_GET,$_POST);
+    	for ($i = 0; $i < count($param); $i += 2) {
+    		if(isset($param[$i]) && isset($param[$i+1])){
+	    		$name  = urldecode(trim($param[$i]));
+	    		$value = urldecode(trim($param[$i+1]));
+	    		$result[$name] = $value;
     		}
     	}
+    	return $result;
     }
 
     /**

@@ -66,14 +66,14 @@
       <div id="left_list">
         <dl>
           {foreach from=$list item=foo}
-          <dt><a href="index.php?id={$foo.id}">{$foo.title}</a></dt>
+          <dt><a href="/index/edit?id={$foo.id}">{$foo.title}</a></dt>
           {/foreach}
         </dl>
       </div>
       <div id="left_share"></div>
     </div>
     <div id="layout_right">
-      <form action="post.php" method="post">
+      <form action="/index/post?x=test_get" method="post">
         <div id="right_form">主题:<br/>
           <input type="text" name="title" id="title" value="{$post.title}">
           <br/>
