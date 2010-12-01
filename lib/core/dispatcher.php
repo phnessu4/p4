@@ -51,11 +51,13 @@ class core_dispatcher {
 
     	/* 检查是否默认调用 */
         if (array_key_exists($path, $this->rules)) {
-            $this->invoke($path, $this->rules[$path]);
+        	try {
+            	$this->invoke($path, $this->rules[$path]);
+        	} catch (Exception $e) {
+        		core_log::error($e->getMessage());
+        	}
             exit;
         }
-
-        /* 如不匹配,返回404 */
         $this->error_404();
     }
 
@@ -64,35 +66,33 @@ class core_dispatcher {
      */
     private function invoke($path, $rules){
 
-    	/* 检查默认cotroller是否存在 */
+    	/* 检查默认cotroller ,method是否存在 */
     	if (empty($rules['controller'])) {
-    		trigger_error("No controller configured for the rules file "
-                . $path, E_USER_ERROR);
+    		throw new Exception("默认配置缺少 controller , 错误地址 : " . URL, E_USER_ERROR);
+    	}
+    	if (empty($rules['method'])) {
+    		throw new Exception("默认配置缺少 method , 错误地址 : " . URL, E_USER_ERROR);
     	}
 
     	/* 验request中的值,赋值或根据配置文件初始化值 */
         $controller = isset($this->request[0]) ? array_shift($this->request) : $rules['controller'];
         $method 	= isset($this->request[0]) ? array_shift($this->request) : $rules['method'];
         $param 	= isset($this->request) ? $this->request : null;
-        //dbx($controller,$method,$params);	//TODO:调试参数
 
     	/* 引用controller,动态调用方法 */
 		require_once( APP_ROOT . DS . 'controllers' . DS . $controller . EXT_CLASS);
         $class = 'app_'.basename($controller);
         $controller = &new $class();
 
-        /* 校验controller 中 method是否存在 */
-        if(method_exists($controller,$method) == false){
-        	echo "method $method not exists";	//TODO:remove this line
+		if (is_subclass_of($controller, 'app_controller') == false) {
+			throw new Exception('无效的 controller : '. $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
+        }
+
+        /* 校验controller 中 method是否存在 ,不存在则使用默认方法*/
+        if(method_exists($controller,$method) == false) {
         	$method = $rules['method'];
         }
-
-        if (is_subclass_of($controller, 'app_controller')) {
-			$controller->param = $this->_param($param);
-        }else{
-			trigger_error('Unhandled request method: '. $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
-
-        }
+		$controller->param = $this->_param($param);
         $controller->$method();
     }
 
@@ -116,8 +116,7 @@ class core_dispatcher {
      */
     private function error_404(){
 	    @header("HTTP/1.0 404 Not Found");
-	    echo '文件没有找到';
-        //include(FILE_NOT_FOUND);
+        include(ERROR_404_PAGE);
         exit;
     }
 }

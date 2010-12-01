@@ -9,17 +9,5 @@ class core_object {
 	public function log_debug_something() {
 
 	}
-	/**
-	 *
-	 */
-	public function dbx() {
-
-	}
-	/**
-	 *
-	 */
-	public function dpx() {
-
-	}
 }
 ?>

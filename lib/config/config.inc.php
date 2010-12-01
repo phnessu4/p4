@@ -2,10 +2,12 @@
 function_exists('realpath') ? '' : die('function realpath not exists , cant define ROOT');
 realpath(dirname(__FILE__)) ? '' : die('cant find the file realpath');
 
+define('URL', 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']) . $_SERVER['REQUEST_URI'] );
+
 /* 核心库目录路径定义 */
 define('DS',DIRECTORY_SEPARATOR);
 /* 框架根目录 */
-define('ROOT',realpath(dirname(__FILE__) . DS .'..' ));
+define('ROOT',realpath(dirname(__FILE__) . DS . '..' . DS . '..' ));
 /* 核心库路径 */
 define('LIB_ROOT',ROOT . DS . 'lib');
 /* 第三方库路径 */
@@ -16,6 +18,11 @@ define('DATA_ROOT',ROOT . DS . 'data');
 defined('APP_ROOT') or define('APP_ROOT',ROOT . DS . 'app');
 /* 扩展名 */
 define('EXT_CLASS','.php');
+
+/* 日志路径 */
+define('LOG_ROOT',APP_ROOT . DS . 'data' . DS . 'log');
+/* 是否开启日志 */
+define('LOG_ENABLE',true);
 
 /* 定义数据库 */
 define('DB_HOST','localhost');  //数据库定位
@@ -36,4 +43,7 @@ if (DEBUG == 2) {
 }
 
 defined('P4_LOADED') ? exit : define('P4_LOADED',1);
+define('ERROR_404_PAGE', APP_ROOT . DS . 'web' . DS .'404.html');
+
+require_once 'constants.php';
 ?>

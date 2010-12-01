@@ -25,6 +25,7 @@ class app_index extends app_controller{
 			echo $e->getMessage();
 		}
 		$this->view->assign('list',$r);
+		core_log::error('index page visit');
 		$this->view->display('index.html');
 	}
 

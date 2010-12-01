@@ -2,7 +2,7 @@
 /**
  * 框架入口
  */
-require_once 'config.inc.php';
+require_once 'config/config.inc.php';
 
 function_exists('spl_autoload_register') ? '' : die('SPL not installed');
 
@@ -19,8 +19,11 @@ function classLoader($class) {
 	/* 类名转路径 */
 	$path = str_replace('_',DS,strtolower($class));
 	$file = LIB_ROOT . DS . $path . '.php';
+
+	/* 类不存在 */
 	if (!file_exists($file)){
-		die('cant find '.$file);
+		core_log::error('cant find '.$file);
+		exit;
 	}
 	include $file;
 }
