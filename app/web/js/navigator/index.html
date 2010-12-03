@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>navigator check</title>
+<script type="text/javascript">
+var ua = navigator.userAgent.toLowerCase();
+var Browser = {
+        'isIE' : (ua.indexOf('msie') >= 0) && (ua.indexOf('opera') < 0),
+        'isFirefox' : ua.indexOf('firefox') >= 0,
+        'isOpera' : ua.indexOf('opera') >= 0
+        }; 
+
+</script>
+</head>
+<body>
+浏览器版本测试
+<pre>
+<script type="text/javascript">
+document.write("<p>navigator.appCodeName = "+ navigator.appCodeName + "</p>");
+document.write("<p>navigator.appMinorVersion = "+ navigator.appMinorVersion + "</p>");
+document.write("<p>navigator.appName = "+ navigator.appName + "</p>");
+document.write("<p>navigator.appVersion = "+ navigator.appVersion + "</p>");
+document.write("<p>navigator.browserLanguage = "+ navigator.browserLanguage + "</p>");
+document.write("<p>navigator.systemLanguage = "+ navigator.systemLanguage + "</p>");
+document.write("<p>navigator.userLanguage = "+ navigator.userLanguage + "</p>");
+document.write("<p>navigator.cookieEnabled = "+ navigator.cookieEnabled + "</p>");
+document.write("<p>navigator.mimeTypes = "+ navigator.mimeTypes + "</p>");
+document.write("<p>navigator.platform = "+ navigator.platform + "</p>");
+document.write("<p>navigator.plugins = "+ navigator.plugins + "</p>");
+document.write("<p>navigator.userAgent = "+ navigator.userAgent + "</p>");
+document.write("<p>navigator.cpuClass = "+ navigator.cpuClass + "</p>");
+document.write("<p>navigator.onLine = "+ navigator.onLine + "</p>");
+document.write("<p>navigator.javaEnabled() = "+ navigator.javaEnabled() + "</p>");
+document.write("<p>navigator.taintEnabled() = "+ navigator.taintEnabled() + "</p>");
+</script>
+</pre>
+<p>js资料</p>
+<p>http://www.w3school.com.cn/htmldom/dom_obj_navigator.asp</p>
+<p>ff 插件 User Agent Switche</p>
+<p>user anget资料</p>
+<p>http://www.cnbeta.com/articles/71532.htm</p>
+<p>http://baike.baidu.com/view/1029229.html</p>
+<p>http://www.dreamdu.com/javascript/window.navigator/</p>
+<p>http://www.useragentstring.com/pages/useragentstring.php</p>
+</body>
+</html>
