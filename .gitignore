@@ -1,3 +1,3 @@
-#app/data/log/*
-#app/data/tpl_c/*
+app/data/log/*.log
+app/data/tpl_c/*.php
 #app/data/cache/*
