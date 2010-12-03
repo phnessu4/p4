@@ -25,7 +25,7 @@ class app_index extends app_controller{
 			echo $e->getMessage();
 		}
 		$this->view->assign('list',$r);
-		core_log::error('index page visit');
+			core_log::error('index page visit');
 		$this->view->display('index.html');
 	}
 
@@ -51,10 +51,10 @@ class app_index extends app_controller{
 	 *
 	 */
 	public function post(){
-		$id 		= strip_tags($this->param['id']);
-		$title   	= strip_tags($this->param['title']);
-		$action = strip_tags($this->param['action']);
-		$content = strip_tags($this->param['content']);
+		$id = isset($this->param['id']) ? strip_tags($this->param['id']) : '';
+		$title = isset($this->param['title']) ? strip_tags($this->param['title']) : '';
+		$action = isset($this->param['action']) ? strip_tags($this->param['action']) : '';
+		$content = isset($this->param['content']) ? strip_tags($this->param['content']) : '';
 
 		if($action == 'update'){
 			$sql = "UPDATE `note`.`notes` SET `title` =  '$title',`content` = '$content' WHERE `notes`.`id` =$id";
