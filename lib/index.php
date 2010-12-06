@@ -12,19 +12,26 @@ if(function_exists('__autoload')){
 }
 
 /* 加载loader */
-spl_autoload_extensions(".php"); // comma-separated list
+spl_autoload_extensions(EXT_CLASS); // comma-separated list
 spl_autoload_register('classLoader');
 
 function classLoader($class) {
 	/* 类名转路径 */
 	$path = str_replace('_',DS,strtolower($class));
-	$file = LIB_ROOT . DS . $path . '.php';
+	$lib_file = LIB_ROOT . DS . $path . EXT_CLASS;
 
-	/* 类不存在 */
-	if (!file_exists($file)){
-		core_log::error('cant find '.$file);
+	if (file_exists($lib_file)){
+		include $lib_file;
 		exit;
 	}
-	include $file;
+	
+	/* 类不存在 */
+	$model_file = LIB_ROOT . DS . $path . EXT_CLASS;
+	if (file_exists($lib_file)){
+		include $lib_file;
+		exit;
+	}
+	core_log::error('cant find '.$file);
+	exit;
 }
 ?>

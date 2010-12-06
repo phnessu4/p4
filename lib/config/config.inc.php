@@ -14,13 +14,16 @@ define('LIB_ROOT',ROOT . DS . 'lib');
 define('EXT_ROOT',ROOT . DS . 'ext');
 /* 数据路径 */
 define('DATA_ROOT',ROOT . DS . 'data');
+
 /* 应用app路径(默认) */
 defined('APP_ROOT') or define('APP_ROOT',ROOT . DS . 'app');
-/* 扩展名 */
-define('EXT_CLASS','.php');
-
+defined('CONTROLLER_ROOT') or define('CONTROLLER_ROOT',APP_ROOT . DS . 'controller');
+defined('MODEL_ROOT') or define('MODEL_ROOT',APP_ROOT . DS . 'model');
 /* 日志路径 */
 define('LOG_ROOT',APP_ROOT . DS . 'data' . DS . 'log');
+
+/* 扩展名 */
+define('EXT_CLASS','.php');
 /* 是否开启日志 */
 define('LOG_ENABLE',true);
 
