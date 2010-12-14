@@ -26,12 +26,13 @@ function classLoader($class) {
 	}
 	
 	/* 类不存在 */
-	$model_file = LIB_ROOT . DS . $path . EXT_CLASS;
+	$model_file = MODEL_ROOT . DS . $path . EXT_CLASS;
 	if (file_exists($lib_file)){
 		include $lib_file;
 		exit;
 	}
-	core_log::error('cant find '.$file);
+	
+	core_log::error('cant find '.$class);
 	exit;
 }
 ?>
