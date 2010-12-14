@@ -16,8 +16,8 @@ class core_log {
 	/**
 	 * 正常日志
 	 */
-	public function access($msg){
-		self::do_log($msg, self::ACCESS);
+	public function access($msg,  $sender = __CLASS__){
+		self::do_log($msg, $sender, self::ACCESS);
 	}
 
 	/**

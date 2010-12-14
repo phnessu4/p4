@@ -18,7 +18,7 @@ define('DATA_ROOT',ROOT . DS . 'data');
 /* 应用app路径(默认) */
 defined('APP_ROOT') or define('APP_ROOT',ROOT . DS . 'app');
 defined('CONTROLLER_ROOT') or define('CONTROLLER_ROOT',APP_ROOT . DS . 'controller');
-defined('MODEL_ROOT') or define('MODEL_ROOT',APP_ROOT . DS . '..' .DS. 'model');
+defined('MODEL_ROOT') or define('MODEL_ROOT',APP_ROOT . DS . '..' );
 /* 日志路径 */
 define('LOG_ROOT',APP_ROOT . DS . 'data' . DS . 'log');
 

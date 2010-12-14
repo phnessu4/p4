@@ -18,36 +18,19 @@ spl_autoload_register('classLoader');
 function classLoader($class) {
 	/* 类名转路径 */
 	$path = str_replace('_',DS,strtolower($class));
-	echo $class . "    $path<br />";
+	//echo $class . "    $path<br />";
+	
 	$lib_file = LIB_ROOT . DS . $path . EXT_CLASS;
-
-<<<<<<< HEAD
-	if (file_exists($lib_file)){
-		include $lib_file;
-		exit;
-	}
-	
-	/* 类不存在 */
 	$model_file = MODEL_ROOT . DS . $path . EXT_CLASS;
-	if (file_exists($lib_file)){
-		include $lib_file;
-		exit;
-	}
-	
-	core_log::error('cant find '.$class);
-	exit;
-=======
-	$file_name = explode(DS,$path);
-	dbx($file_name);
 
-	if (!file_exists($lib_file) ){
+	file_exists($lib_file) ? $file = $lib_file : '';
+	file_exists($model_file) ? $file = $model_file : '';
+	
+	if (!isset($file)){
 		core_log::error('cant find '.$class);
 		exit;
 	}
-	@include $lib_file;
-	$file_name = explode(DS,$path);
-	dbx($file_name);
-	$model_file = MODEL_ROOT . DS . $path . EXT_CLASS;
->>>>>>> origin/master
+	
+	include $file;
 }
 ?>
