@@ -80,8 +80,8 @@ class core_dispatcher {
         $param 	= isset($this->request) ? $this->request : null;
 
     	/* 引用controller,动态调用方法 */
-		require_once( APP_ROOT . DS . 'controllers' . DS . $controller . EXT_CLASS);
-        $class = 'app_'.basename($controller);
+		require_once( APP_ROOT . DS . 'controller' . DS . $controller . EXT_CLASS);
+        $class = 'app_controller_'.basename($controller);
         $controller = &new $class();
 
 		if (is_subclass_of($controller, 'app_controller') == false) {
