@@ -8,7 +8,7 @@ define('APPLACTION_NAME','p4_blog');
 define('APP_ROOT',realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR .'..' ));
 
 require_once('../../lib/index.php');
-core_dispatcher::instance()->dispatcher($_SERVER['REQUEST_URI']);
+core_dispatcher::instance()->run($_SERVER['REQUEST_URI']);
 //http://samuelsjoberg.com/archive/2007/01/url-dispatcher
 
 

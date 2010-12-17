@@ -11,7 +11,7 @@ class core_dispatcher {
 	//app配置列表,访问规则
 	private $rules;
 	//分发url地址
-	private $uri;
+	private $path = ROOT_KEY;
 	//url转换的请求
 	private $request;
 
@@ -19,7 +19,6 @@ class core_dispatcher {
 	    if (is_null($inifile)) {
             $inifile = APP_ROOT . DS . 'rules.ini';
         }
-
         /* 获取配置文件 */
         $this->rules = parse_ini_file($inifile, true);
     }
@@ -37,29 +36,38 @@ class core_dispatcher {
     /**
      * 处理分发
      */
-    public function dispatcher($uri) {
+    public function run($uri) {
+		$this->parse_path($uri);
+		$this->parse_invoke();
+	}
+
+	/**
+	 * 解析uri,转换为请求地址
+	 */
+	private function parse_path($uri) {
     	$chunks = parse_url($uri);
-        $this->uri = $chunks['path'];
-
-        /* 处理请求地址 */
-        if ($this->uri == ROOT_KEY) {
-        	$path = ROOT_KEY;
-        } else {
-	        $this->request = split('/',preg_replace('#^/|/$#', '', $this->uri));
-	        $path = $this->request[0];
+		$path =  $chunks['path'];
+        if ($path != ROOT_KEY) {
+	        $this->request = split('/',preg_replace('#^/|/$#', '', $path));
+	        $this->path = $this->request[0];
         }
+	}
 
-    	/* 检查是否默认调用 */
-        if (array_key_exists($path, $this->rules)) {
+	/**
+	 * 解析rules规则,触发invoke
+	 */
+	private function parse_invoke() {
+		/* 检查是否默认调用 */
+        if (array_key_exists($this->path, $this->rules)) {
         	try {
-            	$this->invoke($path, $this->rules[$path]);
+            	$this->invoke($this->path, $this->rules[$this->path]);
         	} catch (Exception $e) {
         		core_log::error($e->getMessage());
         	}
             exit;
         }
         $this->error_404();
-    }
+	}
 
     /**
      * 调用

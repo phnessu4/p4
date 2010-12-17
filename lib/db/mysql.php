@@ -43,7 +43,7 @@ class db_mysql
 			throw new Exception('mysql not connected');
 		}
 		$query = mysql_query($sql,$this->connect);
-		
+
 		if (mysql_errno()) {
 			throw new Exception(mysql_error());
 		}
@@ -78,7 +78,7 @@ class db_mysql
 			throw new Exception(mysql_error());
 		}
 		return true;
-		
+
 	}
 function __toString()
 {
