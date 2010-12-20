@@ -7,15 +7,15 @@ define('ROOT_KEY', '/');
 
 class core_dispatcher {
 	//实例化
-	private static $instance;
+	protected static $instance = null;
 	//app配置列表,访问规则
-	private $rules;
+	protected $rules;
 	//分发url地址
-	private $path = ROOT_KEY;
+	protected $path = ROOT_KEY;
 	//url转换的请求
-	private $request;
+	protected $request;
 
-	public function __construct($inifile = null) {
+	protected function __construct($inifile = null) {
 	    if (is_null($inifile)) {
             $inifile = APP_ROOT . DS . 'rules.ini';
         }
@@ -26,9 +26,9 @@ class core_dispatcher {
 	/**
 	 * 实例化
 	 */
-	public function instance () {
+	public static function instance () {
 	    if(is_null(self::$instance)) {
-            self::$instance = new core_dispatcher();
+            self::$instance = new self();
         }
         return self::$instance;
     }

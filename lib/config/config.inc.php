@@ -48,5 +48,4 @@ if (DEBUG == 2) {
 defined('P4_LOADED') ? exit : define('P4_LOADED',1);
 define('ERROR_404_PAGE', APP_ROOT . DS . 'web' . DS .'404.html');
 
-require_once 'constants.php';
 ?>

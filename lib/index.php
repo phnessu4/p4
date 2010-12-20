@@ -3,16 +3,14 @@
  * 框架入口
  */
 require_once 'config/config.inc.php';
+require_once 'config/constants.php';
 
 function_exists('spl_autoload_register') ? '' : die('SPL not installed');
 
-/* 加载原始autoload */
 if(function_exists('__autoload')){
 	spl_autoload_register('__autoload');
 }
-
-/* 加载loader */
-spl_autoload_extensions(EXT_CLASS); // comma-separated list
+spl_autoload_extensions(EXT_CLASS);
 spl_autoload_register('classLoader');
 
 function classLoader($class) {

@@ -29,13 +29,15 @@ class app_controller_index extends app_controller{
 			try {
 				$db = new app_model_db();
 				$r = $db->get_post($id);
+				$this->view->assign('list',$db->list_post());
 				$this->view->assign('action','update');
 				$this->view->assign('post',$r[0]);
 			} catch (Exception $e) {
 				echo $e->getMessage();
 			}
 		}
-		$this->execute();
+		core_log::access('edit page visit');
+		$this->view->display('index.html');
 	}
 
 	/**
