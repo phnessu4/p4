@@ -9,7 +9,7 @@ class core_log {
 	const DEBUG = 3;
 	const ACCESS = 4;
 
-	public static $log_path = LOG_ROOT;
+	public static $log_path = LOG_PATH;
 	public static $log_enabled	= LOG_ENABLE;
 	public static $log_date_format = 'Y-m-d H:i:s';
 

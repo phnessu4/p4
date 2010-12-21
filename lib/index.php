@@ -2,10 +2,9 @@
 /**
  * 框架入口
  */
-require_once 'config/config.inc.php';
+require_once 'config.inc.php';
 
 function_exists('spl_autoload_register') ? '' : die('SPL not installed');
-
 if(function_exists('__autoload')){
 	spl_autoload_register('__autoload');
 }
@@ -13,7 +12,6 @@ spl_autoload_extensions(EXT_CLASS);
 spl_autoload_register('p4::classLoader');
 
 define('ROOT_KEY', '/');
-
 class p4 {
 	//实例化
 	protected static $instance = null;
@@ -48,7 +46,8 @@ class p4 {
      * 处理分发
      */
     public function run($uri) {
-		$this->parse_path($uri);
+		core_log::access('run');
+    	$this->parse_path($uri);
 		$this->parse_invoke();
 	}
 
@@ -144,8 +143,8 @@ class p4 {
 		$path = str_replace('_',DS,strtolower($class));
 		//echo $class . "    $path<br />";
 
-		$lib_file = LIB_ROOT . DS . $path . EXT_CLASS;
-		$model_file = MODEL_ROOT . DS . $path . EXT_CLASS;
+		$lib_file = ROOT . DS . $path . EXT_CLASS;
+		$model_file = APP_MODEL . DS . $path . EXT_CLASS;
 
 		file_exists($lib_file) ? $file = $lib_file : '';
 		file_exists($model_file) ? $file = $model_file : '';
