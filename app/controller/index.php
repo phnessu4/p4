@@ -2,7 +2,7 @@
 /**
  * demo index
  */
-class app_controller_index extends app_controller{
+class app_controller_index extends core_controller{
 	public $param = array();
 
 	/**

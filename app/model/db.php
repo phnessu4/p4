@@ -1,5 +1,5 @@
 <?php
-class app_model_db extends app_model{
+class app_model_db extends core_model{
 	/**
 	 *
 	 */
