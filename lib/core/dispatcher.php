@@ -127,5 +127,6 @@ class core_dispatcher {
         include(ERROR_404_PAGE);
         exit;
     }
+
 }
 ?>
