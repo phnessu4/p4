@@ -2,7 +2,7 @@
 /**
  * interface controller
  */
-class core_controller {
+class core_controller{
 	public $param =array();
 	public  $view = null;
 

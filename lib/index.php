@@ -54,7 +54,7 @@ class p4 {
 	/**
 	 * 解析uri,转换为请求地址
 	 */
-	private function parse_path($uri) {
+	protected function parse_path($uri) {
     	$chunks = parse_url($uri);
 		$path =  $chunks['path'];
         if ($path != ROOT_KEY) {
@@ -66,7 +66,7 @@ class p4 {
 	/**
 	 * 解析rules规则,触发invoke
 	 */
-	private function parse_invoke() {
+	protected function parse_invoke() {
 		/* 检查是否默认调用 */
         if (array_key_exists($this->path, $this->rules)) {
         	try {
@@ -82,7 +82,7 @@ class p4 {
     /**
      * 调用
      */
-    private function invoke($path, $rules){
+    protected function invoke($path, $rules){
 
     	/* 检查默认cotroller ,method是否存在 */
     	if (empty($rules['controller'])) {
@@ -97,28 +97,32 @@ class p4 {
         $method 	= isset($this->request[0]) ? array_shift($this->request) : $rules['method'];
         $param 	= isset($this->request) ? $this->request : null;
 
-    	/* 引用controller,动态调用方法 */
-		require_once( APP_ROOT . DS . 'controller' . DS . $controller . EXT_CLASS);
-        $class = 'app_controller_'.basename($controller);
-        $controller = &new $class();
-
-        //TODO:controller验证耦合太紧
-		if (is_subclass_of($controller, 'core_controller') == false) {
-			throw new Exception('无效的 controller : '. $_SERVER['REQUEST_METHOD'], E_USER_ERROR);
+    	/* 动态创建controller */
+        $class = APP_NAME.'_controller_'.basename($controller);
+		if (class_exists($class) == false) {
+        	throw new Exception("调用未定义方法,请检查配置或定义方法 : $class", E_USER_ERROR);
         }
+        $controller = &new $class();
 
         /* 校验controller 中 method是否存在 ,不存在则使用默认方法*/
         if(method_exists($controller,$method) == false) {
         	$method = $rules['method'];
         }
-		$controller->param = $this->_param($param);
-        $controller->$method();
+        
+        try {
+			$controller->param = $this->_param($param);
+			$controller->$method();
+        } catch (core_controllerException $e) {
+        	throw new core_controllerException("{$e->getMessage()} : $class @{$e->getFile()} line {$e->getLine()}" , E_USER_ERROR);
+        } catch (Exception $e){
+        	throw new Exception("{$e->getMessage()} : $class @{$e->getFile()} line {$e->getLine()}" , E_USER_ERROR);
+        }
     }
 
     /**
      * 将url解析,合并到参数中,参数覆盖的优先级 url > post > get
      */
-    private function _param($param) {
+    protected function _param($param) {
     	$result = array_merge($_GET,$_POST);
     	for ($i = 0; $i < count($param); $i += 2) {
     		if(isset($param[$i]) && isset($param[$i+1])){
@@ -133,14 +137,15 @@ class p4 {
     /**
      *	error 404
      */
-    private function error_404(){
+    protected function error_404(){
 	    @header("HTTP/1.0 404 Not Found");
         include(ERROR_404_PAGE);
         exit;
     }
+    
 	public static function classLoader($class) {
 		/* 类名转路径 */
-		$path = str_replace('_',DS,strtolower($class));
+		$path = str_replace('_',DS,$class);
 		//echo $class . "    $path<br />";
 
 		$lib_file = ROOT . DS . $path . EXT_CLASS;

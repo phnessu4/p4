@@ -3,7 +3,7 @@
  * @author phnessu4 phnessu4@gmail.com
  * @copyright stylejar.com
  */
-define('APPLACTION_NAME','p4_blog');
+define('APP_NAME','app');
 define('APP_ROOT',realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR .'..' ));
 
 require_once 'debuger.php';
