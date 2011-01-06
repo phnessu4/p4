@@ -2,3 +2,5 @@ app/data/log/*.log
 app/data/tpl_c/*.php
 #app/data/cache/*
 offical/
+offical/data/log/*.log
+offical/data/tpl_c/*.php

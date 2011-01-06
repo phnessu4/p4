@@ -46,7 +46,6 @@ class p4 {
      * 处理分发
      */
     public function run($uri) {
-		core_log::access('run');
     	$this->parse_path($uri);
 		$this->parse_invoke();
 	}
@@ -92,16 +91,19 @@ class p4 {
     		throw new Exception("默认配置缺少 method , 错误地址 : " . URL, E_USER_ERROR);
     	}
 
-    	/* 验request中的值,赋值或根据配置文件初始化值 */
-        $controller = isset($this->request[0]) ? array_shift($this->request) : $rules['controller'];
-        $method 	= isset($this->request[0]) ? array_shift($this->request) : $rules['method'];
-        $param 	= isset($this->request) ? $this->request : null;
-
+    	/* 默认controller */
+        $controller = $rules['controller'];
+		/* 赋值动态调用的method值 */
+        $method = isset($this->request[1]) ? $this->request[1] : $rules['method'];
+		/* 参数 */
+        $param  = array_slice($this->request,2);
+		
     	/* 动态创建controller */
         $class = APP_NAME.'_controller_'.basename($controller);
 		if (class_exists($class) == false) {
         	throw new Exception("调用未定义方法,请检查配置或定义方法 : $class", E_USER_ERROR);
         }
+			
         $controller = &new $class();
 
         /* 校验controller 中 method是否存在 ,不存在则使用默认方法*/
@@ -123,7 +125,7 @@ class p4 {
      * 将url解析,合并到参数中,参数覆盖的优先级 url > post > get
      */
     protected function _param($param) {
-    	$result = array_merge($_GET,$_POST);
+    	$result = array_filter(array_merge($_GET,$_POST),'_param_filter');
     	for ($i = 0; $i < count($param); $i += 2) {
     		if(isset($param[$i]) && isset($param[$i+1])){
 	    		$name  = urldecode(trim($param[$i]));
@@ -163,4 +165,12 @@ class p4 {
 	}
 
 }
+
+/**
+ * 配合attay_filter使用,过滤空元素
+ */
+function _param_filter($var = ''){
+	return !empty($var);
+}
+
 ?>
