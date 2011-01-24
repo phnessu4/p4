@@ -91,26 +91,26 @@ class p4 {
     		throw new Exception("默认配置缺少 method , 错误地址 : " . URL, E_USER_ERROR);
     	}
 
-    	/* 默认controller */
+        /* 默认controller */
         $controller = $rules['controller'];
 		/* 赋值动态调用的method值 */
         $method = isset($this->request[1]) ? $this->request[1] : $rules['method'];
 		/* 参数 */
-        $param  = array_slice($this->request,2);
-		
+        $param  = isset($this->request[2]) ? array_slice($this->request,2) : '';
+
     	/* 动态创建controller */
         $class = APP_NAME.'_controller_'.basename($controller);
 		if (class_exists($class) == false) {
         	throw new Exception("调用未定义方法,请检查配置或定义方法 : $class", E_USER_ERROR);
         }
-			
+
         $controller = &new $class();
 
         /* 校验controller 中 method是否存在 ,不存在则使用默认方法*/
         if(method_exists($controller,$method) == false) {
         	$method = $rules['method'];
         }
-        
+
         try {
 			$controller->param = $this->_param($param);
 			$controller->$method();
@@ -144,7 +144,7 @@ class p4 {
         include(ERROR_404_PAGE);
         exit;
     }
-    
+
 	public static function classLoader($class) {
 		/* 类名转路径 */
 		$path = str_replace('_',DS,$class);
