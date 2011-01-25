@@ -1,13 +1,9 @@
 <?php
-class core_model {
+class core_model extends db_mysql{
+	protected $table = '';
 
-	public $db;
-
-	/**
-	 *
-	 */
 	public function __construct(){
-		$this->db = new db_mysql;
+		parent::__construct();
 	}
 }
 ?>

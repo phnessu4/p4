@@ -112,7 +112,7 @@ class p4 {
         }
 
         try {
-			$controller->param = $this->_param($param);
+			$controller->param = array_merge( $controller->param, $this->_param($param) );
 			$controller->$method();
         } catch (core_controllerException $e) {
         	throw new core_controllerException("{$e->getMessage()} : $class @{$e->getFile()} line {$e->getLine()}" , E_USER_ERROR);

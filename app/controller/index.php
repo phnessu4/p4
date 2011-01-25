@@ -9,6 +9,10 @@ class app_controller_index extends core_controller{
 	 *
 	 */
 	public function execute(){
+		if (!isset($_COOKIE['login']) || $_COOKIE['login'] != true) {
+			return $this->auth();
+		}
+
 		try {
 			$db = new app_model_db();
 			$r =  $db->list_post();
@@ -17,7 +21,7 @@ class app_controller_index extends core_controller{
 		}
 		$this->view->assign('list',$r);
 		core_log::access('index page visit');
-		$this->view->display('index.html');
+		$this->view->display('page/index.html');
 	}
 
 	/**
@@ -37,7 +41,7 @@ class app_controller_index extends core_controller{
 			}
 		}
 		core_log::access('edit page visit');
-		$this->view->display('index.html');
+		$this->view->display('page/index.html');
 	}
 
 	/**
@@ -61,5 +65,10 @@ class app_controller_index extends core_controller{
 			echo $e->getMessage();
 		}
 	}
+
+	public function auth(){
+		return $this->view->display('page/auth.html');
+	}
+
 }
 ?>

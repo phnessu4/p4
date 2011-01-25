@@ -4,7 +4,14 @@
  */
 class core_controller{
 	public $param =array();
-	public  $view = null;
+	public $view = null;
+
+	/**
+	 *
+	 */
+	public function execute(){
+
+	}
 
 	/**
 	 *
