@@ -24,10 +24,7 @@ class db_mysql
 	}
 
 	protected function is_connected(){
-		if(isset($this->connect)){
-			return true;
-		}
-		return false;
+		return isset($this->connect) ? true : false;
 	}
 	/**
 	* 功能:数据库查询函数
