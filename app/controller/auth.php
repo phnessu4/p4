@@ -56,7 +56,7 @@ class app_controller_auth extends core_controller {
 	 * 登出
 	 */
 	public function logout(){
-		setcookie("login", 0,time()+3600,'/');
+		setcookie("login", 0);
 	}
 
 }
