@@ -10,9 +10,7 @@ class core_controller{
 	/**
 	 *
 	 */
-	public function execute(){
-
-	}
+	public function execute(){}
 
 	/**
 	 *
@@ -30,5 +28,21 @@ class core_controller{
 			$this->view->assign('_',$config );
 		}
 	}
+	
+	protected function set($name = null , $value = null) {
+		if(!is_null($name)){
+			$this->view->assign($name , $value);
+		}
+	}
 
+	/**
+	 * 
+	 */
+	public function display($template = null , $menu = null , $active = 'active' ){
+		$this->set('menu_'.$menu, $active);
+		if (!is_null($template)) {
+			return $this->view->display($template);
+		}
+	}
+	
 }
