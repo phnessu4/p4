@@ -21,15 +21,19 @@ class p4 {
 	protected $path = ROOT_KEY;
 	//url转换的请求
 	protected $request;
-	protected $_config = array();
+	//全局变量,配置文件
+	protected $config;
 
-	protected function __construct($inifile = null) {
+	protected function __construct($inifile = null,$config_file = null) {
 	    if (is_null($inifile)) {
             $inifile = APP_ROOT . DS . 'rules.ini';
         }
+        if (is_null($config_file)) {
+            $config_file = APP_ROOT . DS . 'config.ini';
+        }
         /* 获取配置文件 */
         $this->rules = parse_ini_file($inifile, true);
-
+        $this->config = parse_ini_file($config_file, true);
     }
 
 	/**
@@ -112,7 +116,12 @@ class p4 {
         }
 
         try {
+        	/* 传参到controller */
 			$controller->param = array_merge( $controller->param, $this->_param($param) );
+			/* 传递全局变量到controller */
+			$config = array_merge_recursive( $controller->config, $this->config );
+			$controller->set_config($config);
+
 			$controller->$method();
         } catch (core_controllerException $e) {
         	throw new core_controllerException("{$e->getMessage()} : $class @{$e->getFile()} line {$e->getLine()}" , E_USER_ERROR);

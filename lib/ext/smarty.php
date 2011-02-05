@@ -14,6 +14,7 @@ require_once(ROOT . DS . 'plugins' . DS . 'Smarty'.DS.'Smarty.class.php');
 class ext_smarty extends Smarty{
 	public $debug = false;
 	public $compile = false;
+	
 	/**
 	 *
 	 */
@@ -35,5 +36,6 @@ class ext_smarty extends Smarty{
 	public function compile() {
 		$this->compile_check = true;
 	}
+	
 }
 ?>

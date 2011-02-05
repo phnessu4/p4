@@ -92,11 +92,4 @@ class DB_Mongo{
     	return $this->collection->count();
     }
 }
-
-function debugx($var) {
-	echo '<pre>';
-	var_dump($var);
-	//print_r($var);
-	echo '</pre>';
-}
 ?>
