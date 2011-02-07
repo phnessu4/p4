@@ -3,11 +3,11 @@
  * 日志
  */
 class core_log {
-	const ERROR = 0;
-	const WARNING = 1;
-	const NOTICE = 2;
-	const DEBUG = 3;
-	const ACCESS = 4;
+	const LEVEL_ERROR = 0;
+	const LEVEL_WARNING = 1;
+	const LEVEL_NOTICE = 2;
+	const LEVEL_DEBUG = 3;
+	const LEVEL_ACCESS = 4;
 
 	public static $log_path = LOG_PATH;
 	public static $log_enabled	= LOG_ENABLE;
@@ -17,35 +17,35 @@ class core_log {
 	 * 正常日志
 	 */
 	public function access($msg,  $sender = __CLASS__){
-		self::do_log($msg, $sender, self::ACCESS);
+		self::do_log($msg, $sender, self::LEVEL_ACCESS);
 	}
 
 	/**
 	 * 严重错误
 	 */
 	public function error($msg, $sender = __CLASS__){
-		self::do_log($msg, $sender, self::ERROR);
+		self::do_log($msg, $sender, self::LEVEL_ERROR);
 	}
 
 	/**
 	 * 警告
 	 */
 	public function warning($msg, $sender = __CLASS__){
-		self::do_log($msg, $sender, self::WARNING);
+		self::do_log($msg, $sender, self::LEVEL_WARNING);
 	}
 
 	/**
 	 * notice
 	 */
 	public function notice($msg, $sender = __CLASS__){
-		self::do_log($msg, $sender, self::NOTICE);
+		self::do_log($msg, $sender, self::LEVEL_NOTICE);
 	}
 
 	/**
 	 * 调试
 	 */
 	public function debug($msg, $sender = __CLASS__){
-		self::do_log($msg, $sender, self::DEBUG);
+		self::do_log($msg, $sender, self::LEVEL_DEBUG);
 	}
 
 	/**
@@ -56,7 +56,7 @@ class core_log {
 			return false;
 		}
 
-		if ($level == self::ACCESS) {
+		if ($level == self::LEVEL_ACCESS) {
 			$filepath = self::$log_path. DS .'log-'.date('Y-m-d').'.log';
 		}else{
 			$filepath = self::$log_path. DS.'error.log';

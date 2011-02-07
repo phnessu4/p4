@@ -2,6 +2,7 @@
 /**
  * 框架入口
  */
+require_once 'debuger.php';
 require_once 'config.inc.php';
 
 function_exists('spl_autoload_register') ? '' : die('SPL not installed');
@@ -30,6 +31,9 @@ class p4 {
         }
         if (is_null($config_file)) {
             $config_file = APP_ROOT . DS . 'config.ini';
+        }
+        if (!file_exists($inifile) || !file_exists($config_file)) {
+        	throw new Exception('缺少路由文件,模板配置文件');
         }
         /* 获取配置文件 */
         $this->rules = parse_ini_file($inifile, true);
