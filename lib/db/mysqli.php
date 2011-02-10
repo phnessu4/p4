@@ -36,19 +36,12 @@ class db_mysqli
 		if( !$this->is_connected() ){
 			throw new Exception('database not connect');
 		}
-		$mysqli = $this->mysqli->query($sql);
+		$result = $this->mysqli->query($sql);
 
 		if ($this->mysqli->errno) {
 			throw new Exception("SQL ERROR:". $this->mysqli->error .' SQL: '. $sql);
 		}
-
-		$id = 0;
-		$result = array();
-		while($row = $mysqli->fetch_assoc()){
-				$result[$id] = $row;
-				$id++;
-		}
-		return $result;
+		return $this->fetch_result_rows( $result );
 	}
 
 	/**
@@ -70,8 +63,18 @@ class db_mysqli
 		}
 		return true;
 	}
-	function __toString() {
-	    return "";
-	}
+
+	/**
+	 * 匹配结果数据
+	 */
+	private function fetch_result_rows($result, $mode=MYSQLI_ASSOC){
+        $rows=array();
+        while($row = $result->fetch_array($mode)){
+            $rows[]=$row;
+        }
+        $result->close();
+        return $rows;
+    }
+
 }
 ?>
