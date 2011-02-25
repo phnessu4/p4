@@ -41,7 +41,7 @@ class db_mysqli
 		if ($this->mysqli->errno) {
 			throw new Exception("SQL ERROR:". $this->mysqli->error .' SQL: '. $sql);
 		}
-		return $this->fetch_result_rows( $result );
+		return $result;
 	}
 
 	/**
@@ -64,17 +64,32 @@ class db_mysqli
 		return true;
 	}
 
-	/**
-	 * 匹配结果数据
-	 */
-	private function fetch_result_rows($result, $mode=MYSQLI_ASSOC){
-        $rows=array();
-        while($row = $result->fetch_array($mode)){
-            $rows[]=$row;
-        }
+	/***
+	 * 取出匹配数据
+	 * @param string $sql
+	 * @param  $mode
+	 * @return array
+	 ***/
+	protected function fetch_rows($sql , $mode= MYSQLI_ASSOC){
+	    $result = $this->query($sql);
+	    $rows=array();
+	    while($row = $result->fetch_array($mode)){
+	        $rows[]=$row;
+	    }
         $result->close();
         return $rows;
     }
 
+    /***
+     * 取出第一条数据
+    * @param 
+    * @return mixed
+     ***/
+    protected function fetch_first($sql , $mode=MYSQLI_ASSOC) {
+	    $result = $this->query($sql);
+	    $row = $result->fetch_array($mode);
+	    $result->close();
+	    return $row;
+    }
 }
 ?>

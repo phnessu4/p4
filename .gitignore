@@ -6,5 +6,5 @@ offical/data/log/*.log
 offical/data/tpl_c/*.php
 admin
 offical
-.setting
+.settings
 .buildpath
