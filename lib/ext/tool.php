@@ -28,7 +28,7 @@ class ext_tool {
 			$info = isset($data[$name]) ? $data[$name] : '';
 
 			if( !$info ){
-				return self::json_encode(array("error"=>1,"msg"=>"{$name} 不存在,数据不能为空"));
+				return "{$name} 不存在,数据不能为空";
 			}
 
 			$valid = isset($v['valid']) ? $v['valid'] : '';
@@ -42,10 +42,10 @@ class ext_tool {
 			}
 
 			if($error){
-				return self::json_encode(array("error"=>1,"msg"=>"{$name} : {$info} 验证失败,类型不符合类型$valid"));
+				return "{$name} : {$info} 验证失败,类型不符合类型 {$valid}";
 			}
 		}
-		return self::json_encode(array("error"=>0));
+		return;
 	}
 
 	public static function json_encode($str){
