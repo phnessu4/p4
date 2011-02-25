@@ -65,7 +65,7 @@ class p4 {
     	$chunks = parse_url($uri);
 		$path =  $chunks['path'];
         if ($path != ROOT_KEY) {
-	        $this->request = split('/',preg_replace('#^/|/$#', '', $path));
+	        $this->request = explode('/',preg_replace('#^/|/$#', '', $path));
 	        $this->path = $this->request[0];
         }
 	}
