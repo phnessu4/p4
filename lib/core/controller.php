@@ -61,4 +61,15 @@ class core_controller {
     public function to_json(array $data) {
         echo ext_tool::json_encode ( $data );
     }
+    
+    /***
+     * 页面重定向
+     * @param $url 		重定向地址
+     * @param $http_code	http定向代码
+     * @return mixed
+     ***/
+    public function to_redirect($url,$http_code=302) {
+        header("HTTP/1.1 $http_code");
+        header("Location: $url",true);
+    }
 }

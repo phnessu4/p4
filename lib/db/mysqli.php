@@ -4,7 +4,8 @@
  */
 class db_mysqli {
     protected $mysqli;
-
+    protected $table = '';
+    
     public function __construct() {
         $this->mysqli = new mysqli ( DB_HOST, DB_USER, DB_PASS, DB_NAME );
         if (mysqli_connect_errno ()) {throw new Exception ( mysqli_connect_error () . $this->mysqli->host_info );}
@@ -74,5 +75,6 @@ class db_mysqli {
         $result->close ();
         return $row;
     }
+    
 }
 ?>

@@ -23,12 +23,12 @@ class ext_tool {
      * @param array	$scheme	基本元素
      * @return true or false 为空返回1,通过返回0
      */
-    public static function vaild_scheme(&$data, $scheme) {
+    public static function vaild_scheme($data, $scheme) {
         foreach ( $scheme as $v ) {
             $name = $v ['name'];
-            $info = isset ( $data [$name] ) ? $data [$name] : '';
-            if (! $info) {return "{$name} 不存在,数据不能为空";}
-            $valid = isset ( $v ['valid'] ) ? $v ['valid'] : '';
+            $info = isset ( $data [$name] ) ? $data [$name] : null;
+            if (is_null($info)) {return "{$name} 不存在,数据不能为空";}
+            $valid = isset ( $v ['valid'] ) ? $v ['valid'] : null;
             $error = false;
             switch ($valid) {
                 case 'url' :
