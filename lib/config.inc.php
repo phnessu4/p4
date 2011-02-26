@@ -1,27 +1,22 @@
 <?php
-define('DS',DIRECTORY_SEPARATOR);
-
-define('ROOT',realpath(dirname(__FILE__) ));
-define('APP_MODEL',APP_ROOT . DS . '..' );
-define('LOG_PATH',APP_ROOT . DS . 'data' . DS . 'log');
-define('ERROR_404_PAGE', APP_ROOT . DS . 'web' . DS .'404.html');
-define('EXT_CLASS','.php');
-
-defined('LOG_ENABLE') or define('LOG_ENABLE',true);
+define ( 'DS', DIRECTORY_SEPARATOR );
+define ( 'ROOT', realpath ( dirname ( __FILE__ ) ) );
+define ( 'APP_MODEL', APP_ROOT . DS . '..' );
+define ( 'LOG_PATH', APP_ROOT . DS . 'data' . DS . 'log' );
+define ( 'ERROR_404_PAGE', APP_ROOT . DS . 'web' . DS . '404.html' );
+define ( 'EXT_CLASS', '.php' );
+defined ( 'LOG_ENABLE' ) or define ( 'LOG_ENABLE', true );
 /* 设置错误级别 */
-defined('DEBUG') or define('DEBUG', 2);
-
+defined ( 'DEBUG' ) or define ( 'DEBUG', 2 );
 if (DEBUG == 2) {
-    error_reporting(E_ALL);
+    error_reporting ( E_ALL );
 } elseif (DEBUG == 1) {
-    error_reporting(E_ALL & ~E_NOTICE);
+    error_reporting ( E_ALL & ~ E_NOTICE );
 } else {
-    error_reporting(E_ERROR | E_PARSE | E_USER_ERROR);
+    error_reporting ( E_ERROR | E_PARSE | E_USER_ERROR );
 }
-
 /* loger access url  */
-define('URL', 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']) . $_SERVER['REQUEST_URI'] );
-
+define ( 'URL', 'http://' . $_SERVER ['HTTP_HOST'] . dirname ( $_SERVER ['PHP_SELF'] ) . $_SERVER ['REQUEST_URI'] );
 /**
  * File and Directory Modes
  * These prefs are used when checking and setting modes when working
@@ -31,22 +26,20 @@ define('URL', 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']) . $_
  * user, PHP under CGI with Apache suEXEC, etc.).  Octal values should
  * always be used to set the mode correctly.
  */
-define('FILE_READ_MODE', 0644);
-define('FILE_WRITE_MODE', 0666);
-define('DIR_READ_MODE', 0755);
-define('DIR_WRITE_MODE', 0777);
-
+define ( 'FILE_READ_MODE', 0644 );
+define ( 'FILE_WRITE_MODE', 0666 );
+define ( 'DIR_READ_MODE', 0755 );
+define ( 'DIR_WRITE_MODE', 0777 );
 /**
  * File Stream Modes
  * These modes are used when working with fopen()/popen()
  */
-define('FOPEN_READ', 'rb');
-define('FOPEN_READ_WRITE', 'r+b');
-define('FOPEN_WRITE_CREATE_DESTRUCTIVE', 'wb');
-define('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE', 'w+b');
-define('FOPEN_WRITE_CREATE', 'ab');
-define('FOPEN_READ_WRITE_CREATE', 'a+b');
-define('FOPEN_WRITE_CREATE_STRICT', 'xb');
-define('FOPEN_READ_WRITE_CREATE_STRICT',	'x+b');
-
+define ( 'FOPEN_READ', 'rb' );
+define ( 'FOPEN_READ_WRITE', 'r+b' );
+define ( 'FOPEN_WRITE_CREATE_DESTRUCTIVE', 'wb' );
+define ( 'FOPEN_READ_WRITE_CREATE_DESTRUCTIVE', 'w+b' );
+define ( 'FOPEN_WRITE_CREATE', 'ab' );
+define ( 'FOPEN_READ_WRITE_CREATE', 'a+b' );
+define ( 'FOPEN_WRITE_CREATE_STRICT', 'xb' );
+define ( 'FOPEN_READ_WRITE_CREATE_STRICT', 'x+b' );
 ?>
