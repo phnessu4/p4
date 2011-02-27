@@ -16,6 +16,11 @@ class core_controller {
         $this->view = new ext_smarty ();
     }
 
+    /**
+     * controller hook 方法,调度invoke的时候会自动调用
+     */
+    public function controller_hook($method){}
+    
     /***
      * 添加全局变量到模板
      * @param array $config	全局变量设置 
@@ -71,5 +76,12 @@ class core_controller {
     public function to_redirect($url,$http_code=302) {
         header("HTTP/1.1 $http_code");
         header("Location: $url",true);
+    }
+    
+    /**
+     * 返回上一页
+     */
+    public function to_history(){
+		return $this->to_redirect($_SERVER['HTTP_REFERER']);
     }
 }

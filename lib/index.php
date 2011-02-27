@@ -109,6 +109,8 @@ class p4 {
             /* 传递全局变量到controller */
             $config = array_merge_recursive ( $controller->config, $this->config );
             $controller->set_config ( $config );
+            /* 实现controller hook方法 */
+            $controller->controller_hook($method);
             $controller->$method ();
         } catch ( core_controllerException $e ) {
             throw new core_controllerException ( "{$e->getMessage()} : $class @{$e->getFile()} line {$e->getLine()}", E_USER_ERROR );
